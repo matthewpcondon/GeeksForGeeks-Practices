@@ -1,0 +1,76 @@
+class Solution {
+    void sortArray(int ar[], int low, int high)
+    {
+        
+        if(high > low)
+        {
+            int pivot = partition(ar, low, high);
+            //pivot is an index, not a value.
+            sortArray(ar, low, pivot-1);
+            sortArray(ar, pivot+1, high);
+        }
+    }
+    int partition(int ar[], int low, int high)
+    {
+        int pivot = ar[low];
+        int wall = high+1;
+        for (int current = high; current >= low; current--)
+        {
+            if (ar[current] >= pivot)
+            {// 4 8 1 3 0 4 2
+            // 
+                wall--;
+                // swap them using bitwise XOR didn't work for some reason.
+                int temp = ar[current];
+                ar[current] = ar[wall];
+                ar[wall] = temp;
+            }
+        }
+        return wall;
+    }
+    
+    int countTriplet(int arr[], int n) {
+        // sort array first
+        // if n is one or two, return 0
+        
+        if (n == 2 || n == 1)
+        {
+            return 0;
+        }
+        sortArray(arr, 0, n-1);
+        /*
+        for (int i : arr)
+        {
+            System.out.print(i + " ");
+        }
+        System.out.println(); */
+        // at this point, we know that n is 3 or greater
+        // use two pointers: one for the beginning, one for the end
+        // if they don't add to (end-1):
+            // if it's less, increment the first pointer
+            // if it's more, decrement the end pointer
+        // if they do add to (end-1):
+            // increment ans and increment beg, decrement end.
+        int ans = 0;
+        int currSum;
+        for (int compareIndex = n-1; compareIndex >= 2; compareIndex--)
+        {
+            for (int beg = 0, end = compareIndex-1; beg < end;)
+            {
+                currSum = arr[end] + arr[beg];
+                if (currSum == arr[compareIndex])
+                { // we've found a triplet!
+                    end--;
+                    beg++;
+                    ans++;
+                }
+                else if (currSum < arr[compareIndex])
+                    beg++;
+                else
+                    end--;
+            } 
+        }
+        
+        return ans;
+    }
+}
