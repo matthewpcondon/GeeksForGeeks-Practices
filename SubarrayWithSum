@@ -1,0 +1,37 @@
+class Solution{
+    static ArrayList<Integer> subarraySum(int[] arr, int n, int targetSum){
+        
+            HashMap<Integer, Integer> d = new HashMap<Integer, Integer>();
+            int currSum = 0;
+            for (int i = 0; i < n; i++)
+            {
+                // 1 2 3 4 5 6 7 8 9 10
+                currSum += arr[i];
+                if (currSum == targetSum)
+                {
+                    ArrayList<Integer> a = new ArrayList<Integer>();
+                    a.add(1);
+                    a.add(i+1);
+                    return a;
+                }
+                if ( d.containsKey(currSum - targetSum) )
+                {
+                    ArrayList<Integer> a = new ArrayList<Integer>();
+                    int startIndexAnswer = d.get(currSum-targetSum) + 2;
+                    a.add(startIndexAnswer);
+                    a.add(i+1);
+                    return a;
+                }
+                else
+                {
+                    d.put(currSum, i);
+                }
+            }
+            return new ArrayList<Integer>() { 
+                { 
+                    add(-1);
+                }
+            }; 
+        
+    }
+}
