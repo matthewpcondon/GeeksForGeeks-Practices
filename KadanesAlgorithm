@@ -1,0 +1,72 @@
+
+class Main {
+    
+	public static void main (String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int t = Integer.parseInt(br.readLine().trim()); //Inputting the testcases
+		while(t-->0){
+		    //size of array
+		    int n = Integer.parseInt(br.readLine().trim());
+		    int arr[] = new int[n];
+		    String inputLine[] = br.readLine().trim().split(" ");
+		    
+		    //adding elements
+		    for(int i=0; i<n; i++){
+		        arr[i] = Integer.parseInt(inputLine[i]);
+		    }
+		    
+		    Solution obj = new Solution();
+		    
+		    //calling maxSubarraySum() function
+		    System.out.println(obj.maxSubarraySum(arr, n));
+		}
+	}
+}
+
+// } Driver Code Ends
+
+
+class Solution{
+    int max(int a, int b)
+    {
+        if (a >= b)
+        {
+            return a;
+        }
+        return b;
+    }
+
+    // arr: input array
+    // n: size of array
+    //Function to find the sum of contiguous subarray with maximum sum.
+    int maxSubarraySum(int arr[], int n){
+        
+        // -2 2 5 -11 6 20
+        /*
+        current sum takes the max of either arr[i] or currsum
+        max takes the max of either currsum or itself
+        */
+        
+        if (n == 1)
+        {
+            return arr[0];
+        }
+        int maxSum = arr[0], currSum = arr[0];
+        for (int i = 1; i < n; i++)
+        {
+            currSum += arr[i];
+            // if we have a new start index, we need to discout the previous sum
+            if (arr[i] > currSum)
+            {
+                currSum = arr[i];
+            }
+            if (maxSum < currSum)
+            {
+                maxSum = currSum;
+            }
+        }
+        return maxSum;
+    }
+    
+}
+
