@@ -1,0 +1,48 @@
+class Solution {
+    int MissingNumber(int array[], int n) {
+        // XOR has certain properties.
+        /*
+        if    a1 ^ a2 ^ a3 ... ^ an = a
+        and     a1 ^ a2 ^ a3 ... ^ a(n-1) = b
+        then a ^ b = an
+        In this case, we're starting with a = 0
+        so let's say n is 6, and we're looking for 7
+        0 ^ 1 ^ 2 ^ 3 ^ 4 ^ 5 ^ 6 = 7
+        000 ^ 001 = 001
+        001 ^ 010 = 011
+        011 ^ 011 = 000
+        000 ^ 100 = 100
+        100 ^ 101 = 001
+        001 ^ 110 = 111
+        
+        and the chain up to 5 is: 1, so b is 1.
+        the chain up to 6, as shown above, is 7. So a is 7
+        001 ^ 111 is 110
+        
+        Now down to what the code is doing:
+        So let's try an example array: [2, 4, 3, 1, 6]
+        so 5 is missing. a ^ b should be 101, or five.
+        so we get a == 7 after the first loop.
+        and then we get in the 'j' loop:
+        000 ^ 010 = 010
+        010 ^ 100 = 110
+        110 ^ 011 = 101
+        101 ^ 001 = 100
+        100 ^ 110 = 010
+        so b is 2, or 010
+        7 ^ 2 is 111 ^ 010 = 101, which is five.
+        Basically, XOR'ing the result of the full sequence with that of
+        the sequence with omitted value results in the omitted value.
+        */
+        int a = 0, b = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            a = a ^ i;
+        }
+        for (int j = 0; j < n-1; j++)
+        {
+            b = b ^ array[j];
+        }
+        return a ^ b;
+    }
+}
