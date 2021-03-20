@@ -1,0 +1,18 @@
+class Solution
+{
+    int getMiddle(Node head)
+    {
+         int digits[] = new int[5001];
+         int count = 1;
+         digits[1] = head.data;
+         Node curr = head.next;
+         while (curr != null)
+         {
+             digits[++count] = curr.data;
+             curr = curr.next;
+         }
+         return digits[count/2 + 1];
+         
+         
+    }
+}
