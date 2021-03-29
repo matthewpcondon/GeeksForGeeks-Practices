@@ -1,0 +1,43 @@
+class Solution
+{
+    private static PriorityQueue<Integer> hi = new PriorityQueue<Integer>();
+	private static PriorityQueue<Integer> lo = new PriorityQueue<Integer>(Comparator.reverseOrder());
+    private static double currMed = 0.0d;
+    // Function to insert heap
+    public static void balanceHeaps(){
+		if (hi.size() > lo.size()){
+			lo.offer(hi.poll());
+			return;
+		}
+		hi.offer(lo.poll());
+		
+	}
+	public static double getMedian(){
+		
+		return currMed;
+	}
+	public static void insertHeap(int element){
+		
+		if (element < currMed){
+			lo.add(element);
+		}
+		else{
+		    hi.add(element);
+		}
+		if ( Math.abs(hi.size() - lo.size()) > 1 ){
+			balanceHeaps();
+		}
+		// reset the median, now that the heaps are updated
+		if (hi.size() > lo.size()){
+			currMed = hi.peek();
+		}
+		else if (lo.size() > hi.size()){
+			currMed = lo.peek();
+		}
+		else {
+    		
+    		currMed = ( lo.peek() + hi.peek() ) / 2.0d;
+		}
+	}
+    
+}
