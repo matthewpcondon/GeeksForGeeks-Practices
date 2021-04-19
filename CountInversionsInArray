@@ -1,0 +1,102 @@
+// requires (I couldn't include it because of GFG's IDE) a driver Main() method that takes in the input.
+//User function Template for Java
+class IntWrapper{
+    public long value;
+    public IntWrapper(long initValue){
+        value = initValue;
+    }
+}
+class Solution
+{
+    static void Merge(long[] arr, int l, int m, int r, IntWrapper iw){
+            // Find sizes of two
+            // subarrays to be Merged
+            int n1 = m - l + 1;
+            int n2 = r - m;
+            // Create temp arrays
+            long[] L = new long[n1];
+            long[] R = new long[n2];
+            int i, j;
+     
+            // Copy data to temp arrays
+            for (i = 0; i < n1; ++i)
+                L[i] = arr[l + i];
+            for (j = 0; j < n2; ++j)
+                R[j] = arr[m + 1 + j];
+     
+            // Merge the temp arrays
+     
+            // Initial indexes of first
+            // and second subarrays
+            i = 0;
+            j = 0;
+     
+            // Initial index of Merged
+            // subarry array
+            int k = l;
+            while (i < n1 && j < n2) {
+                if (L[i] <= R[j]) {
+                    arr[k] = L[i];
+                    i++;
+                }
+                else {
+                    // count the number of inversions
+                    iw.value += ((long)n1 - (long)i);
+                    // subtract the current index in L from the length of
+                    // L in order to obtain the number of elements in
+                    // L that are bigger than R[j].
+                    // This is because L is already sorted.
+                    arr[k] = R[j];
+                    j++;
+                }
+                k++;
+            }
+     
+            // Copy remaining elements
+            // of L[] if any
+            while (i < n1) {
+                arr[k] = L[i];
+                i++;
+                k++;
+            }
+     
+            // Copy remaining elements
+            // of R[] if any
+            while (j < n2) {
+                arr[k] = R[j];
+                j++;
+                k++;
+            }
+        }
+ 
+    // Main function that
+    // MergeSorts arr[l..r] using
+    // Merge()
+        static void MergeSort(long[] arr, int l, int r, IntWrapper iw) {
+            // long is just barely big enough to hold sufficiently large values.
+            if (l < r) {
+                // Find the middle
+                // point
+                int m = l+ (r-l)/2;
+                // MergeSort first and
+                // second halves
+                MergeSort(arr, l, m, iw);
+                MergeSort(arr, m + 1, r, iw);
+                // Merge the MergeSorted halves
+                Merge(arr, l, m, r, iw);
+            }
+        } /*
+    static void PrintArray <T> (T[] arr){
+        foreach(T t in arr){
+            Console.Write(t.ToString() + " ");
+        }
+        Console.WriteLine();
+    } */
+	public static long inversionCount(long[] arr, long nLong){
+		IntWrapper iw = new IntWrapper(0l);
+		// n's max value is 100000. Why do you need a long for that?
+		// You could almost represent that with a short.
+		int n = (int) nLong;
+		MergeSort(arr, 0, n-1, iw);
+		return iw.value;
+	}
