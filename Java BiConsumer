@@ -1,0 +1,35 @@
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
+import java.text.*;
+import java.math.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner sc = new Scanner(System.in);
+        // I want to try this with lambdas, too. It looks cool!
+        Map<String, BiConsumer<Integer, Integer>> MyOps = new HashMap<>();
+        String[] nm = sc.nextLine().split(" ");
+        int n = Integer.parseInt(nm[0]), m = Integer.parseInt(nm[1]);
+        BitSet[] bs = new BitSet[3];
+        bs[1] = new BitSet(n);
+        bs[2] = new BitSet(n);
+        MyOps.put("AND", (a, b) -> bs[a].and(bs[b]));
+        MyOps.put("OR", (a, b) -> bs[a].or(bs[b]));
+        MyOps.put("XOR", (a, b) -> bs[a].xor(bs[b]));
+        MyOps.put("FLIP", (a, b) -> bs[a].flip(b));
+        MyOps.put("SET", (a, b) -> bs[a].set(b));
+        String op;
+        int x, y;
+        while (m-- > 0){
+            op = sc.next();
+            x = sc.nextInt();
+            y = sc.nextInt();
+            MyOps.get(op).accept(x, y);
+            System.out.printf("%d %d%n", bs[1].cardinality(),
+            bs[2].cardinality());
+        }
+    }
+}
