@@ -1,0 +1,17 @@
+private static Node reverseList(Node head){
+        Node curr = head;
+        Node next = null;
+        Node prev = null;
+        // prev, curr, next
+        // curr.next becomes prev, then curr becomes next.
+    	while (curr.next != null){
+    	    next = curr.next;
+    	    curr.next = prev;
+    	    prev = curr;
+    	    curr = next;
+    	}
+    	// the last reversal was not done during the loop.
+    	curr.next = prev;
+    	// return the pointer to the new head.
+    	return curr;
+    }  
