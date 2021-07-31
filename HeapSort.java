@@ -1,10 +1,10 @@
-//Function to build a Heap from array.
+//Function to build a max Heap from array.
     void buildHeap(int arr[], int n)
     {
         // the range of internal nodes is floor(n/2)-1 to 0.
         // an 'internal' node is one with children
         // a 'leaf' is a node that has no children.
-        // this starts with internal nodes closes to the leaves
+        // this starts with internal nodes closes to the leaves, then works up.
         int lastInternal = n/2 - 1;
         for (int i = lastInternal; i >= 0; i--){
             heapify(arr, n, i);
