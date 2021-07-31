@@ -13,7 +13,7 @@
  
     //Heapify function to maintain heap property on per-node basis
     void heapify(int arr[], int n, int i)
-    {
+    { // i is the node under whom the heap property is being maintained.
         // check which child is the highest, if any child is higher
         int l = 2*i+1;
         int r = 2*i+2;
