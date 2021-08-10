@@ -6,7 +6,7 @@ class IndexedPriorityQueue {
 	int n, heap_size;
 	public IndexedPriorityQueue(int _n){
 		values = new int[_n];
-		Arrays.fill(values, -1);
+		Arrays.fill(values, Integer.MAX_VALUE);
 		pos_map = new Integer[_n];
 		inverse_map = new Integer[_n];
 		n = _n;
@@ -33,7 +33,7 @@ class IndexedPriorityQueue {
 	public int peekIndex(){
 	    return inverse_map[0];
 	}
-	public int peek(){
+	public int peekValue(){
 		return values[inverse_map[0]];
 	}
 	public int poll(){
@@ -56,25 +56,25 @@ class IndexedPriorityQueue {
 		if (heap_index < 0 || heap_index >= n)
 		    throw new ArrayIndexOutOfBoundsException("heap index is out of bounds.");
 		swap(heap_index, heap_size-1);
+		inverse_map[heap_size-1] = null;
+		values[ki] = Integer.MAX_VALUE;
+		pos_map[ki] = null;
 		heap_size--;
 		sink(heap_index);
 		swim(heap_index);
-		values[ki] = -1;
-		pos_map[ki] = null;
-		inverse_map[heap_size+1] = null;
 		return ki;
 	}
 	private boolean less(int heap_index1, int heap_index2){
 		if (heap_index1 >= n || heap_index2 >= n)
 			throw new IndexOutOfBoundsException("heap index 1: "+
 			heap_index1+"\nheap index 2: "+heap_index2);
-		int k1 = inverse_map[heap_index1];
-		int k2 = inverse_map[heap_index2];
-		if (k1 >= n || k2 >= n || values[k1] == -1 || values[k2] == -1)
+		Integer k1 = inverse_map[heap_index1];
+		Integer k2 = inverse_map[heap_index2];
+		if (k1 == null || k2 == null || values[k1] == Integer.MAX_VALUE ||
+		values[k2] == Integer.MAX_VALUE)
 			throw new IndexOutOfBoundsException("k1: "+k1+"\nk2: "+k2+
 			"\nk1 value: "+values[k1]+"\nk2 value: "+values[k2]);
-		return values[k1] <
-		    values[k2];
+		return values[k1] < values[k2];
 	}
 	private void swim(int i){ // i is the index to attempt to move up
 		for (int parent = (i-1)/2; i > 0 && less(i, parent);){
@@ -88,7 +88,7 @@ class IndexedPriorityQueue {
 			int left = heap_index*2 + 1;
 			int right = heap_index*2 + 2;
 			int smallest = left;
-			if (right < heap_size && less(right, heap_index))
+			if (right < heap_size && less(right, left))
 				smallest = right;
 			if (left >= heap_size || less(heap_index, smallest))
 				break;
